@@ -1,4 +1,3 @@
-###################################################
 Tracker App is a standalone Android application, currently under development.
 
 More information will be provided when the developer will have the required time.
