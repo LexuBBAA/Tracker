@@ -41,14 +41,6 @@ public class Toolbar extends android.support.v7.widget.Toolbar implements View.O
         mTitle.setText(title);
     }
 
-    public void setMenuEnabled(boolean menuEnabled) {
-        if(menuEnabled) {
-            mNavigationButton.setBackgroundResource(R.drawable.ic_menu_black_24dp);
-        } else {
-            mNavigationButton.setBackgroundResource(R.drawable.ic_arrow_back_black_24dp);
-        }
-    }
-
     public void setOnNavigationListener(OnNavigationListener onNavigationListener) {
         mOnNavigationListener = onNavigationListener;
     }

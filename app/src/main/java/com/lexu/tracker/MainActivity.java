@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.lexu.materialexu.OnNavigationListener;
+import com.lexu.materialexu.Toolbar;
 import com.lexu.tracker.Models.TimeEntry;
 
 import java.text.SimpleDateFormat;
@@ -21,10 +23,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
+        toolbar.setOnNavigationListener(new OnNavigationListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.this.onBackPressed();
+            }
+        });
+
         TextView currentDate = (TextView) findViewById(R.id.main_date);
         currentDate.setText(
                 new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
-                        .format(Calendar.getInstance())
+                        .format(Calendar.getInstance().getTime())
         );
 
         ListView timeEntryList = (ListView) findViewById(R.id.main_entry_list);
