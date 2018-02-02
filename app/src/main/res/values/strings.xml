@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Tracker</string>
+    <string name="play_pause_button">Play/pause button</string>
+    <string name="stop_button">Stop button</string>
+    <string name="task_description_optional">Task description (optional)</string>
+    <string name="save">Save</string>
+    <string name="task_title_optional">Task Title (optional)</string>
+    <string name="time_separator">:</string>
+    <string name="time_value_placeholder">%s</string>
+    <string name="title_placeholder">Title placeholder</string>
+    <string name="long_text_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut quis ultrices sem. Sed vel porta ex. Suspendisse euismod lacus neque, quis placerat lectus scelerisque sed. Donec scelerisque augue eget felis pellentesque, et auctor elit laoreet. Sed quis nulla rutrum, eleifend enim sed, congue velit. Aliquam id ultricies neque. Sed vitae augue et neque accumsan porta sed suscipit enim.</string>
+    <string name="formatted_time_placeholder">%dh %dm</string>
+    <string name="date_placeholder">Date placeholder</string>
+    <string name="time_entries_title">Time Entries</string>
 </resources>
