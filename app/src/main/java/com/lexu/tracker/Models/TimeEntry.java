@@ -19,6 +19,10 @@ public class TimeEntry {
     private int mSpentHours; //mandatory
     private int mSpentMinutes; //mandatory
 
+    private TimeEntry() {
+
+    }
+
     public TimeEntry(@Nullable String title, @Nullable String description, Calendar date, int spentHours, int spentMinutes) {
         mID = Utils.generateTimeEntryID();
         mTitle = title;
@@ -89,5 +93,38 @@ public class TimeEntry {
 
     public void setSpentMinutes(int spentMinutes) {
         mSpentMinutes = spentMinutes;
+    }
+
+    public static class Builder {
+        private TimeEntry mTimeEntry;
+
+        public Builder() {
+            mTimeEntry = new TimeEntry();
+            mTimeEntry.setDate(Calendar.getInstance());
+        }
+
+        public Builder setTitle(String title) {
+            mTimeEntry.setTitle(title);
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            mTimeEntry.setDescription(description);
+            return this;
+        }
+
+        public Builder setHours(int hours) {
+            mTimeEntry.setSpentHours(hours);
+            return this;
+        }
+
+        public Builder setMinutes(int minutes) {
+            mTimeEntry.setSpentMinutes(minutes);
+            return this;
+        }
+
+        public TimeEntry build() {
+            return mTimeEntry;
+        }
     }
 }

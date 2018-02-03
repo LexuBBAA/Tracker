@@ -2,6 +2,7 @@ package com.lexu.tracker;
 
 import com.lexu.tracker.Models.TimeEntry;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimerTask;
 
@@ -9,14 +10,34 @@ public class TimeEntryTask extends TimerTask {
 
     private int minutes = 0;
     private int seconds = 0;
+    private ArrayList<PauseRange> mPauseBreaks = new ArrayList<PauseRange>();
     private OnTimeUpdateCallback callback = null;
 
-    public TimeEntryTask(OnTimeUpdateCallback callback) {
+    private boolean isPaused = false;
+    private boolean isAlive = false;
+
+    TimeEntryTask(OnTimeUpdateCallback callback) {
         this.callback = callback;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
     }
 
     @Override
     public void run() {
+        if(!this.isAlive) {
+            this.isAlive = true;
+        }
+
+        if(this.isPaused) {
+            return;
+        }
+
         this.seconds++;
 
         if(this.seconds >= 60) {
@@ -40,7 +61,22 @@ public class TimeEntryTask extends TimerTask {
             }
         }
 
-        this.callback.onStop(new TimeEntry(null, null, Calendar.getInstance(), hours, resultedMinutes));
+        this.callback.onStop(
+                new TimeEntry.Builder()
+                        .setHours(hours)
+                        .setMinutes(resultedMinutes)
+                        .build()
+        );
         return super.cancel();
+    }
+
+    public void pause() {
+        this.isPaused = true;
+        mPauseBreaks.add(new PauseRange(Calendar.getInstance().getTime()));
+    }
+
+    public void resume()  {
+        this.isPaused = false;
+        mPauseBreaks.get(mPauseBreaks.size() - 1).setStopTime(Calendar.getInstance().getTime());
     }
 }

@@ -11,6 +11,7 @@ import com.lexu.tracker.Models.TimeEntry;
 import com.lexu.tracker.Views.TimeEntryView;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Utils {
     public static String generateTimeEntryID() {
@@ -53,4 +54,29 @@ class TimeEntryListAdapter extends ArrayAdapter<TimeEntry> {
 interface OnTimeUpdateCallback {
     void onUpdate(int minutes, int seconds);
     void onStop(TimeEntry newTimeEntry);
+}
+
+class PauseRange {
+    private Date mStartTime = null;
+    private Date mStopTime = null;
+
+    public PauseRange(Date startTime) {
+        mStartTime = startTime;
+    }
+
+    public Date getStartTime() {
+        return mStartTime;
+    }
+
+    public Date getStopTime() {
+        return mStopTime;
+    }
+
+    public void setStopTime(Date stopTime) {
+        mStopTime = stopTime;
+    }
+
+    public static int computePause(Date d1, Date d2) {
+        return (int) ((d1.getTime() - d2.getTime()) / 60 / 1000);
+    }
 }
