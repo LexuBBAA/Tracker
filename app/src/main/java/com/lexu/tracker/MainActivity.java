@@ -1,5 +1,6 @@
 package com.lexu.tracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,12 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final int TRACKER_REQUEST_CODE_TRACK = 1001;
+    public static final int TRACKER_RESULT_CODE_TRACK = 1002;
+    public static final int TRACKER_RESULT_CODE_EDIT = 1003;
+
+    public static final String TRACKER_NEW_ENTRY_KEY = "TRACKER_NEW_ENTRY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
                         .format(Calendar.getInstance().getTime())
         );
 
+        TextView noRecordsMessage = (TextView) findViewById(R.id.main_no_records_message);
+
         ListView timeEntryList = (ListView) findViewById(R.id.main_entry_list);
         timeEntryList.setAdapter(new TimeEntryListAdapter(this, R.layout.layout_time_entry, new ArrayList<TimeEntry>()));
 
@@ -45,8 +54,15 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: navigate to Create Time Entry Screen
+                Intent navigate = new Intent(MainActivity.this, TrackActivity.class);
+                startActivityForResult(navigate, TRACKER_REQUEST_CODE_TRACK);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //TODO: handle result
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -12,4 +12,5 @@
     <string name="formatted_time_placeholder">%dh %dm</string>
     <string name="date_placeholder">Date placeholder</string>
     <string name="time_entries_title">Time Entries</string>
+    <string name="no_records_placeholder">No records to display</string>
 </resources>

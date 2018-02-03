@@ -5,11 +5,12 @@ import android.support.annotation.Nullable;
 
 import com.lexu.tracker.Utils;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class TimeEntry {
+public class TimeEntry implements Serializable {
     private static final String DATE_FORMAT = "dd-MMM-yyyy";
 
     private String mID;

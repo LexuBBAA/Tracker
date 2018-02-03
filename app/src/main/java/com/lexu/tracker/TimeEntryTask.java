@@ -1,10 +1,14 @@
 package com.lexu.tracker;
 
+import android.util.Log;
+
 import com.lexu.tracker.Models.TimeEntry;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimerTask;
+
+import static android.content.ContentValues.TAG;
 
 public class TimeEntryTask extends TimerTask {
 
@@ -30,6 +34,7 @@ public class TimeEntryTask extends TimerTask {
 
     @Override
     public void run() {
+        Log.d(TAG, "run: " + minutes + "m , " + seconds + 's');
         if(!this.isAlive) {
             this.isAlive = true;
         }
