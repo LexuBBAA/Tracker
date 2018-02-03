@@ -19,7 +19,7 @@ public class TimeEntry {
     private int mSpentHours; //mandatory
     private int mSpentMinutes; //mandatory
 
-    public TimeEntry(String title, String description, Calendar date, int spentHours, int spentMinutes) {
+    public TimeEntry(@Nullable String title, @Nullable String description, Calendar date, int spentHours, int spentMinutes) {
         mID = Utils.generateTimeEntryID();
         mTitle = title;
         mDescription = description;

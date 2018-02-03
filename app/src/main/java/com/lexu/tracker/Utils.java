@@ -49,3 +49,8 @@ class TimeEntryListAdapter extends ArrayAdapter<TimeEntry> {
         return position >= data.size() ? null : data.get(position);
     }
 }
+
+interface OnTimeUpdateCallback {
+    void onUpdate(int minutes, int seconds);
+    void onStop(TimeEntry newTimeEntry);
+}
