@@ -85,14 +85,17 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         if(v.getId() == mStartButton.getId()) {
             if(!mTask.isAlive()) {
-                mStartButton.setBackgroundResource(R.drawable.ic_pause_black_24dp);
+                mTitle.setText("Tracking time");
+                mStartButton.setImageResource(R.drawable.ic_pause_black_24dp);
                 mTimer.scheduleAtFixedRate(mTask, 0, 1000);
             } else {
                 if(mTask.isPaused()) {
-                    mStartButton.setBackgroundResource(R.drawable.ic_pause_black_24dp);
+                    mTitle.setText("Tracking time");
+                    mStartButton.setImageResource(R.drawable.ic_pause_black_24dp);
                     mTask.resume();
                 } else {
-                    mStartButton.setBackgroundResource(R.drawable.ic_play_circle_filled_black_24dp);
+                    mTitle.setText("Tracking paused");
+                    mStartButton.setImageResource(R.drawable.ic_play_circle_filled_black_24dp);
                     mTask.pause();
                 }
             }
@@ -102,7 +105,9 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
         if(v.getId() == mStopButton.getId()) {
             mTask.cancel();
 
-            mStartButton.setBackgroundResource(R.drawable.ic_play_arrow_black_24dp);
+            mTitle.setText("Tracking stopped");
+
+            mStartButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
             mStartButton.setEnabled(false);
             mStopButton.setEnabled(false);
 
@@ -113,11 +118,9 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onUpdate(final int minutes, final int seconds) {
-        Log.d(TAG, "onUpdate: " + minutes + ' ' + seconds);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "run: " + minutes + ' ' + seconds);
                 if(minutes > 0) {
                     mMinutes.setText(minutes >= 10 ? String.valueOf(minutes): "0".concat(String.valueOf(minutes)));
                 }
