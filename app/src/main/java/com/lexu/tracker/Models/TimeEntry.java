@@ -1,9 +1,6 @@
 package com.lexu.tracker.Models;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import com.lexu.tracker.Utils;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -13,7 +10,7 @@ import java.util.Locale;
 public class TimeEntry implements Serializable {
     private static final String DATE_FORMAT = "dd-MMM-yyyy";
 
-    private String mID;
+    private int mID;
     private String mTitle; //optional
     private String mDescription; //optional
     private Calendar mDate; //mandatory
@@ -25,7 +22,7 @@ public class TimeEntry implements Serializable {
     }
 
     public TimeEntry(@Nullable String title, @Nullable String description, Calendar date, int spentHours, int spentMinutes) {
-        mID = Utils.generateTimeEntryID();
+        mID = -1;
         mTitle = title;
         mDescription = description;
         mDate = date;
@@ -33,7 +30,7 @@ public class TimeEntry implements Serializable {
         mSpentMinutes = spentMinutes;
     }
 
-    public TimeEntry(@NonNull String id, @Nullable String title, @Nullable String description, Calendar date, int spentHours, int spentMinutes) {
+    public TimeEntry(int id, @Nullable String title, @Nullable String description, Calendar date, int spentHours, int spentMinutes) {
         mID = id;
         mTitle = title;
         mDescription = description;
@@ -42,11 +39,11 @@ public class TimeEntry implements Serializable {
         mSpentMinutes = spentMinutes;
     }
 
-    public String getID() {
+    public long getID() {
         return mID;
     }
 
-    public void setID(String ID) {
+    public void setID(int ID) {
         mID = ID;
     }
 

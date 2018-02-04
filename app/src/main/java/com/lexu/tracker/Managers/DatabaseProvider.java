@@ -1,5 +1,7 @@
 package com.lexu.tracker.Managers;
 
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,15 +21,27 @@ public class DatabaseProvider extends AsyncTask<Void, Void, Void> {
     private static final String DATABASE_NAME = "TRACKER_DB";
     private static final String TIMES_TABLE_NAME = "TRACKER_TIMES";
 
+    @SuppressLint("StaticFieldLeak")
     private Context mContext;
     private OnDatabaseCallback<TimeEntry> mCallback;
-    private SQLiteDatabase mDB;
+    SQLiteDatabase mDB;
+
+    private int queryType = 0;
 
     private ArrayList<TimeEntry> data = new ArrayList<TimeEntry>();
 
     DatabaseProvider(Context context, OnDatabaseCallback<TimeEntry> callback) {
         mContext = context;
         mCallback = callback;
+    }
+
+    void setCallback(OnDatabaseCallback<TimeEntry> callback) {
+        mCallback = callback;
+    }
+
+    public DatabaseProvider with(int queryType) {
+        this.queryType = queryType;
+        return this;
     }
 
     @Override
@@ -40,24 +54,35 @@ public class DatabaseProvider extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        Cursor cursor = mDB.rawQuery(DatabaseQueryBuilder.buildSelectAllQuery(TIMES_TABLE_NAME), null);
-        int idIndex = cursor.getColumnIndex("");
-        int titleIndex = cursor.getColumnIndex("");
-        int descriptionIndex = cursor.getColumnIndex("");
-        int dateIndex = cursor.getColumnIndex("");
-        int hoursIndex = cursor.getColumnIndex("");
-        int minutesIndex = cursor.getColumnIndex("");
+        String query = "";
+        switch (this.queryType) {
+            case 1:     //Retrieve this month's data
+            case 2:     //Retrieve this week's data
+            case 3:     //Retrieve today's data
+                query = DatabaseQueryBuilder.buildSelectByPeriodQuery(TIMES_TABLE_NAME, this.queryType);
+                break;
+
+            default:     //Retrieve all data
+                query = DatabaseQueryBuilder.buildSelectAllQuery(TIMES_TABLE_NAME);
+                break;
+        }
+
+        Cursor cursor = mDB.rawQuery(query, null);
+        int idIndex = cursor.getColumnIndex(DatabaseQueryBuilder._ID_COLUMN_NAME);
+        int titleIndex = cursor.getColumnIndex(DatabaseQueryBuilder.TITLE_COLUMN_NAME);
+        int descriptionIndex = cursor.getColumnIndex(DatabaseQueryBuilder.DESCRIPTION_COLUMN_NAME);
+        int dateIndex = cursor.getColumnIndex(DatabaseQueryBuilder.DATE_COLUMN_NAME);
+        int hoursIndex = cursor.getColumnIndex(DatabaseQueryBuilder.HOURS_COLUMN_NAME);
+        int minutesIndex = cursor.getColumnIndex(DatabaseQueryBuilder.MINUTES_COLUMN_NAME);
 
         this.data = new ArrayList<TimeEntry>();
-
-//        cursor.moveToFirst();
 
         if(!cursor.moveToFirst()) {
             return null;
         }
 
         do {
-            String rId = cursor.getString(idIndex);
+            int rId = cursor.getInt(idIndex);
             String rTitle = cursor.getString(titleIndex);
             String rDescription = cursor.getString(descriptionIndex);
             String rDateString = cursor.getString(dateIndex);
@@ -91,12 +116,50 @@ public class DatabaseProvider extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(aVoid);
     }
 
+    long insertRecord(TimeEntry record) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseQueryBuilder.TITLE_COLUMN_NAME, record.getTitle());
+        contentValues.put(DatabaseQueryBuilder.DESCRIPTION_COLUMN_NAME, record.getDescription());
+        contentValues.put(DatabaseQueryBuilder.DATE_COLUMN_NAME, record.getDate());
+        contentValues.put(DatabaseQueryBuilder.HOURS_COLUMN_NAME, record.getSpentHours());
+        contentValues.put(DatabaseQueryBuilder.MINUTES_COLUMN_NAME, record.getSpentMinutes());
+
+        return mDB.insert(DatabaseProvider.TIMES_TABLE_NAME, null, contentValues);
+    }
+
+    boolean updateRecord(long id, TimeEntry record) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseQueryBuilder.TITLE_COLUMN_NAME, record.getTitle());
+        contentValues.put(DatabaseQueryBuilder.DESCRIPTION_COLUMN_NAME, record.getDescription());
+        contentValues.put(DatabaseQueryBuilder.DATE_COLUMN_NAME, record.getDate());
+        contentValues.put(DatabaseQueryBuilder.HOURS_COLUMN_NAME, record.getSpentHours());
+        contentValues.put(DatabaseQueryBuilder.MINUTES_COLUMN_NAME, record.getSpentMinutes());
+
+        String selection = DatabaseQueryBuilder._ID_COLUMN_NAME + " LIKE ?";
+        String[] selectionArgs = {String.valueOf(id)};
+
+        return mDB.update(TIMES_TABLE_NAME, contentValues, selection, selectionArgs) != 0;
+    }
+
+    boolean deleteRecord(long id) {
+        String selection = DatabaseQueryBuilder._ID_COLUMN_NAME + " LIKE ?";
+        String[] selectionArgs = {String.valueOf(id)};
+
+        return mDB.delete(TIMES_TABLE_NAME, selection, selectionArgs) != 0;
+    }
+
     public static class Builder {
         private Context mContext;
         private DatabaseProvider mDatabaseProvider;
         private OnDatabaseCallback<TimeEntry> mOnDatabaseCallback;
 
-        public Builder() {
+        private static Builder INSTANCE = new Builder();
+
+        public static Builder getInstance() {
+            return INSTANCE;
+        }
+
+        private Builder() {
         }
 
         public Builder with(Context context) {
@@ -110,7 +173,25 @@ public class DatabaseProvider extends AsyncTask<Void, Void, Void> {
         }
 
         public DatabaseProvider build() {
-            return new DatabaseProvider(mContext, mOnDatabaseCallback);
+            if(mDatabaseProvider == null) {
+                mDatabaseProvider = new DatabaseProvider(mContext, mOnDatabaseCallback);
+                return mDatabaseProvider;
+            }
+
+            mDatabaseProvider.setCallback(mOnDatabaseCallback);
+            return mDatabaseProvider;
+        }
+
+        public long insert(TimeEntry record) {
+            return mDatabaseProvider.insertRecord(record);
+        }
+
+        public boolean update(long id, TimeEntry record) {
+            return mDatabaseProvider.updateRecord(id, record);
+        }
+
+        public boolean delete(long id) {
+            return mDatabaseProvider.deleteRecord(id);
         }
     }
 }

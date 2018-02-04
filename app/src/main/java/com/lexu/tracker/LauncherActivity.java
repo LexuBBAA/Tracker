@@ -30,10 +30,11 @@ public class LauncherActivity extends AppCompatActivity implements OnDatabaseCal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
 
-        new DatabaseProvider.Builder()
+        DatabaseProvider.Builder.getInstance()
                 .with(LauncherActivity.this)
                 .callback(this)
-                .build().execute();
+                .build()
+                .execute();
 
         this.loadingMessage = (TextView) findViewById(R.id.launcher_loading_text);
         this.loadingMessage.setVisibility(View.VISIBLE);
