@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lexu.materialexu.OnNavigationListener;
+import com.lexu.materialexu.Toolbar;
 import com.lexu.tracker.Managers.DatabaseProvider;
 import com.lexu.tracker.Models.TimeEntry;
 
@@ -39,6 +41,15 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_time);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
+        toolbar.setOnNavigationListener(new OnNavigationListener() {
+            @Override
+            public void onClick(View view) {
+                TrackActivity.this.onBackPressed();
+            }
+        });
 
         mStartButton = (ImageView) findViewById(R.id.track_play);
         mStopButton = (ImageView) findViewById(R.id.track_stop);

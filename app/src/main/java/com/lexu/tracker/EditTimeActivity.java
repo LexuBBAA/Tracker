@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lexu.materialexu.OnNavigationListener;
+import com.lexu.materialexu.Toolbar;
 import com.lexu.tracker.Managers.DatabaseProvider;
 import com.lexu.tracker.Models.TimeEntry;
 import com.lexu.tracker.Views.EditTimeAlert;
@@ -27,6 +29,15 @@ public class EditTimeActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_time);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
+        toolbar.setOnNavigationListener(new OnNavigationListener() {
+            @Override
+            public void onClick(View view) {
+                EditTimeActivity.this.onBackPressed();
+            }
+        });
 
         mRecord = (TimeEntry) getIntent().getSerializableExtra(MainActivity.TRACKER_NEW_ENTRY_KEY);
 
