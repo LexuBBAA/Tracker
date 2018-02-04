@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.lexu.tracker.Managers.DatabaseProvider;
 import com.lexu.tracker.Models.TimeEntry;
 import com.lexu.tracker.Views.EditTimeAlert;
 
@@ -43,11 +45,17 @@ public class EditTimeActivity extends AppCompatActivity implements View.OnClickL
                     mRecord.setTitle(recordTitle.getText().toString());
                     mRecord.setDescription(recordDescription.getText().toString());
 
-                    Intent result = getIntent();
-                    result.putExtra(MainActivity.TRACKER_NEW_ENTRY_KEY, mRecord);
-                    setResult(MainActivity.TRACKER_RESULT_CODE_EDIT, result);
-                    finish();
-                    return;
+                    boolean updated = DatabaseProvider.Builder.getInstance().update(mRecord.getID(), mRecord);
+
+                    if(updated) {
+                        Intent result = getIntent();
+                        result.putExtra(MainActivity.TRACKER_NEW_ENTRY_KEY, mRecord);
+                        setResult(MainActivity.TRACKER_RESULT_CODE_EDIT, result);
+                        finish();
+                        return;
+                    } else {
+                        Toast.makeText(EditTimeActivity.this, "Could not save record", Toast.LENGTH_LONG).show();
+                    }
                 }
 
                 saveButton.setEnabled(true);
