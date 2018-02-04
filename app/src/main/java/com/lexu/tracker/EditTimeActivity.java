@@ -42,7 +42,7 @@ public class EditTimeActivity extends AppCompatActivity implements View.OnClickL
                 if(v.getId() == saveButton.getId()) {
                     mRecord.setTitle(recordTitle.getText().toString());
                     mRecord.setDescription(recordDescription.getText().toString());
-                    
+
                     Intent result = getIntent();
                     result.putExtra(MainActivity.TRACKER_NEW_ENTRY_KEY, mRecord);
                     setResult(MainActivity.TRACKER_RESULT_CODE_EDIT, result);

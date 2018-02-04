@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int TRACKER_RESULT_CODE_TRACK = 2001;
     public static final int TRACKER_RESULT_CODE_EDIT = 2002;
 
+    public static final String TRACKER_DATA_KEY = "TRACKER_DATA";
     public static final String TRACKER_NEW_ENTRY_KEY = "TRACKER_NEW_ENTRY";
     private static final String TRACKER_UPDATE_POSITION = "TRACKER_UPDATE_POSITION";
 

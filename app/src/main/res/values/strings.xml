@@ -15,4 +15,7 @@
     <string name="no_records_placeholder">No records to display</string>
     <string name="recorded_time_label_text">Recorded time:</string>
     <string name="edit_time_title_text">Edit record</string>
+    <string name="application_logo">Application Logo</string>
+    <string name="loading_phase_0_text">Loading</string>
+    <string name="loaded_text">Loaded!</string>
 </resources>
