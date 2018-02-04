@@ -12,6 +12,7 @@ import com.lexu.tracker.Models.TimeEntry;
 
 import java.util.Locale;
 
+@Deprecated
 public class TimeEntryView extends ConstraintLayout {
     private TimeEntry mEntry = null;
 
