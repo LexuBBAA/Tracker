@@ -96,6 +96,36 @@ public class TimeEntry implements Serializable {
         mSpentMinutes = spentMinutes;
     }
 
+    public void addMinutes(int minutes) {
+        if(minutes < 0 && mSpentMinutes + minutes < 0) {
+            int totalMinutes = mSpentHours * 60 + mSpentMinutes;
+            mSpentHours = 0;
+
+            totalMinutes += minutes;
+
+            mSpentHours = totalMinutes / 60;
+            mSpentMinutes = totalMinutes % 60;
+        } else {
+            mSpentMinutes += minutes;
+            if(mSpentMinutes >= 60) {
+                mSpentHours += mSpentMinutes / 60;
+                mSpentMinutes = mSpentMinutes % 60;
+            }
+        }
+    }
+
+    public void addHours(int hours) {
+        mSpentHours += hours;
+    }
+
+    public void update(TimeEntry updatedEntry) {
+        mTitle = updatedEntry.getTitle();
+        mDescription = updatedEntry.getDescription();
+
+        mSpentHours = updatedEntry.getSpentHours();
+        mSpentMinutes = updatedEntry.getSpentMinutes();
+    }
+
     public static class Builder {
         private TimeEntry mTimeEntry;
 
