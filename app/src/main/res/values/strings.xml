@@ -13,4 +13,6 @@
     <string name="date_placeholder">Date placeholder</string>
     <string name="time_entries_title">Time Entries</string>
     <string name="no_records_placeholder">No records to display</string>
+    <string name="recorded_time_label_text">Recorded time:</string>
+    <string name="edit_time_title_text">Edit record</string>
 </resources>
