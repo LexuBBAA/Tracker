@@ -123,6 +123,10 @@ public class DatabaseProvider extends AsyncTask<Void, Void, Void> {
         contentValues.put(DatabaseQueryBuilder.DATE_COLUMN_NAME, record.getDate());
         contentValues.put(DatabaseQueryBuilder.HOURS_COLUMN_NAME, record.getSpentHours());
         contentValues.put(DatabaseQueryBuilder.MINUTES_COLUMN_NAME, record.getSpentMinutes());
+        contentValues.put(DatabaseQueryBuilder.CREATED_DATE_COLUMN_NAME,
+                new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss", Locale.getDefault())
+                .format(Calendar.getInstance().getTime())
+        );
 
         return mDB.insert(DatabaseProvider.TIMES_TABLE_NAME, null, contentValues);
     }
@@ -146,6 +150,10 @@ public class DatabaseProvider extends AsyncTask<Void, Void, Void> {
         String[] selectionArgs = {String.valueOf(id)};
 
         return mDB.delete(TIMES_TABLE_NAME, selection, selectionArgs) != 0;
+    }
+
+    void close() {
+        mDB.close();
     }
 
     public static class Builder {
@@ -192,6 +200,10 @@ public class DatabaseProvider extends AsyncTask<Void, Void, Void> {
 
         public boolean delete(long id) {
             return mDatabaseProvider.deleteRecord(id);
+        }
+
+        public void closeDatabase() {
+            mDatabaseProvider.close();
         }
     }
 }

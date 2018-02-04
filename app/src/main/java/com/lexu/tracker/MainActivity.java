@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.lexu.materialexu.OnNavigationListener;
 import com.lexu.materialexu.Toolbar;
+import com.lexu.tracker.Managers.DatabaseProvider;
 import com.lexu.tracker.Models.TimeEntry;
 
 import java.text.SimpleDateFormat;
@@ -42,6 +43,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(savedInstanceState != null) {
+            mData = (ArrayList<TimeEntry>) savedInstanceState.getSerializable(TRACKER_DATA_KEY);
+        }
+
+        Intent inboundData = getIntent();
+        if(inboundData.hasExtra(TRACKER_DATA_KEY)) {
+            mData = (ArrayList<TimeEntry>) inboundData.getSerializableExtra(TRACKER_DATA_KEY);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
@@ -122,5 +132,18 @@ public class MainActivity extends AppCompatActivity {
         }
         
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(TRACKER_DATA_KEY, mData);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        DatabaseProvider.Builder.getInstance().closeDatabase();
+        super.onDestroy();
     }
 }

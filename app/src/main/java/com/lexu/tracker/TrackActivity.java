@@ -9,7 +9,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.lexu.tracker.Managers.DatabaseProvider;
 import com.lexu.tracker.Models.TimeEntry;
 
 import java.util.Timer;
@@ -74,10 +76,22 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
                     mTimeEntry.setDescription(mTaskDescription.getText().toString());
                 }
 
-                Intent result = getIntent();
-                result.putExtra(MainActivity.TRACKER_NEW_ENTRY_KEY, mTimeEntry);
-                setResult(MainActivity.TRACKER_RESULT_CODE_TRACK, result);
-                finish();
+                long id = DatabaseProvider.Builder.getInstance().insert(mTimeEntry);
+
+                if(id < 0) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(TrackActivity.this, "Unable to save record", Toast.LENGTH_LONG).show();
+                            mSaveButton.setEnabled(true);
+                        }
+                    });
+                } else {
+                    Intent result = getIntent();
+                    result.putExtra(MainActivity.TRACKER_NEW_ENTRY_KEY, mTimeEntry);
+                    setResult(MainActivity.TRACKER_RESULT_CODE_TRACK, result);
+                    finish();
+                }
             }
         });
 
