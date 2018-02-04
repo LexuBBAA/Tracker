@@ -25,6 +25,12 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TRACKER_NEW_ENTRY_KEY = "TRACKER_NEW_ENTRY";
 
+    private ArrayList<TimeEntry> mData = new ArrayList<TimeEntry>();
+
+    private TimeEntryListAdapter mListAdapter;
+    private TextView noRecordsMessage;
+    private ListView timeEntryList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +51,19 @@ public class MainActivity extends AppCompatActivity {
                         .format(Calendar.getInstance().getTime())
         );
 
-        TextView noRecordsMessage = (TextView) findViewById(R.id.main_no_records_message);
+        noRecordsMessage = (TextView) findViewById(R.id.main_no_records_message);
 
-        ListView timeEntryList = (ListView) findViewById(R.id.main_entry_list);
-        timeEntryList.setAdapter(new TimeEntryListAdapter(this, R.layout.layout_time_entry, new ArrayList<TimeEntry>()));
+        timeEntryList = (ListView) findViewById(R.id.main_entry_list);
+        mListAdapter = new TimeEntryListAdapter(this, R.layout.layout_time_entry, mData);
+        timeEntryList.setAdapter(mListAdapter);
+
+        if(mData.size() == 0) {
+            noRecordsMessage.setVisibility(View.VISIBLE);
+            timeEntryList.setVisibility(View.GONE);
+        } else {
+            noRecordsMessage.setVisibility(View.GONE);
+            timeEntryList.setVisibility(View.VISIBLE);
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.main_add_entry);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +77,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //TODO: handle result
+        if(requestCode == TRACKER_REQUEST_CODE_TRACK && resultCode == TRACKER_RESULT_CODE_TRACK) {
+            TimeEntry newEntry = (TimeEntry) data.getSerializableExtra(TRACKER_NEW_ENTRY_KEY);
+            if(newEntry != null) {
+                if(mData.size() == 0) {
+                    this.noRecordsMessage.setVisibility(View.GONE);
+                    this.timeEntryList.setVisibility(View.VISIBLE);
+                }
+
+                mData.add(0, newEntry);
+                mListAdapter.notifyDataSetChanged(mData);
+            }
+        }
+        
         super.onActivityResult(requestCode, resultCode, data);
     }
 }
