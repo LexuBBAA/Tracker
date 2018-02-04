@@ -3,7 +3,6 @@ package com.lexu.tracker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,8 +66,13 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
                     return;
                 }
 
-                mTimeEntry.setTitle(mTaskTitle.getText().toString());
-                mTimeEntry.setDescription(mTaskDescription.getText().toString());
+                if(mTaskTitle.getText().toString().length() != 0) {
+                    mTimeEntry.setTitle(mTaskTitle.getText().toString());
+                }
+
+                if(mTaskDescription.getText().toString().length() != 0) {
+                    mTimeEntry.setDescription(mTaskDescription.getText().toString());
+                }
 
                 Intent result = getIntent();
                 result.putExtra(MainActivity.TRACKER_NEW_ENTRY_KEY, mTimeEntry);

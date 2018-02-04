@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.lexu.tracker.Models.TimeEntry;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimerTask;
 
 import static android.content.ContentValues.TAG;
@@ -59,15 +61,17 @@ public class TimeEntryTask extends TimerTask {
         int resultedMinutes = 0;
         if(this.minutes >= 60) {
             hours = this.minutes / 60;
-            resultedMinutes = this.minutes % 60;
+        }
 
-            if(seconds >= 60) {
-                resultedMinutes++;
-            }
+        resultedMinutes = this.minutes % 60;
+
+        if(seconds != 0) {
+            resultedMinutes++;
         }
 
         this.callback.onStop(
                 new TimeEntry.Builder()
+                        .setTitle(new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()).concat("Tracked Time"))
                         .setHours(hours)
                         .setMinutes(resultedMinutes)
                         .build()
