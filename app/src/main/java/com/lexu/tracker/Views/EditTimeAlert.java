@@ -1,3 +1,9 @@
+/*
+ * Copyright (c)  Bogdan Andrei Alexandru Birsasteanu 2018.
+ * All rights are reserved by Bogdan Andrei Alexandru Birsasteanu.
+ * This is an open-source code, and it can be used as reference for various projects.
+ */
+
 package com.lexu.tracker.Views;
 
 import android.app.Dialog;
@@ -48,13 +54,13 @@ public class EditTimeAlert extends Dialog implements View.OnClickListener {
     private void createView() {
         View root = LayoutInflater.from(mContext).inflate(R.layout.layout_edit_time_popup, null);
         this.setContentView(root);
-        mHours = (EditText) root.findViewById(R.id.popup_hours);
-        mMinutes = (EditText) root.findViewById(R.id.popup_minutes);
-        mAddTime = (RadioButton) root.findViewById(R.id.popup_option_add);
-        mRemoveTime = (RadioButton) root.findViewById(R.id.popup_option_remove);
+        mHours = root.findViewById(R.id.popup_hours);
+        mMinutes = root.findViewById(R.id.popup_minutes);
+        mAddTime = root.findViewById(R.id.popup_option_add);
+        mRemoveTime = root.findViewById(R.id.popup_option_remove);
 
-        Button cancel = (Button) root.findViewById(R.id.popup_cancel);
-        Button save = (Button) root.findViewById(R.id.popup_save);
+        Button cancel = root.findViewById(R.id.popup_cancel);
+        Button save = root.findViewById(R.id.popup_save);
 
         cancel.setOnClickListener(this);
         save.setOnClickListener(this);
@@ -62,11 +68,11 @@ public class EditTimeAlert extends Dialog implements View.OnClickListener {
         View.OnClickListener radioListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.getId() == mAddTime.getId()) {
+                if (v.getId() == mAddTime.getId()) {
                     mAddTime.setEnabled(false);
                     mRemoveTime.setEnabled(true);
                     mRemoveTime.setChecked(false);
-                } else if(v.getId() == mRemoveTime.getId()) {
+                } else if (v.getId() == mRemoveTime.getId()) {
                     mRemoveTime.setEnabled(false);
                     mAddTime.setEnabled(true);
                     mAddTime.setChecked(false);
@@ -87,39 +93,39 @@ public class EditTimeAlert extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         v.setEnabled(false);
 
-        if(v.getId() == R.id.popup_cancel) {
+        if (v.getId() == R.id.popup_cancel) {
             mCallback.onCancel();
 
             v.setEnabled(true);
             return;
         }
 
-        if(v.getId() == R.id.popup_save) {
+        if (v.getId() == R.id.popup_save) {
             int addedHours = mHours.getText().toString().length() != 0 ? Integer.valueOf(mHours.getText().toString()) : 0;
             int addedMinutes = mMinutes.getText().toString().length() != 0 ? Integer.valueOf(mMinutes.getText().toString()) : 0;
-            if(mRemoveTime.isChecked()) {
+            if (mRemoveTime.isChecked()) {
                 boolean valid = true;
-                if(addedHours > mRecordedHours) {
+                if (addedHours > mRecordedHours) {
                     mHours.setError("Invalid value");
                     valid = false;
-                } else if(addedMinutes > mRecordedMinutes || addedMinutes > 59) {
-                    if(addedHours != 0) {
+                } else if (addedMinutes > mRecordedMinutes || addedMinutes > 59) {
+                    if (addedHours != 0) {
                         mRecordedHours -= addedHours;
                     }
 
-                    if(mRecordedHours <= 0) {
+                    if (mRecordedHours <= 0) {
                         mMinutes.setError("Invalid value");
                         valid = false;
                     } else {
                         int totalMinutes = 60 * mRecordedHours;
-                        if(addedMinutes > totalMinutes) {
+                        if (addedMinutes > totalMinutes) {
                             mMinutes.setError("Invalid value");
                             valid = false;
                         }
                     }
                 }
 
-                if(!valid) {
+                if (!valid) {
                     v.setEnabled(true);
                     return;
                 }
@@ -163,6 +169,12 @@ public class EditTimeAlert extends Dialog implements View.OnClickListener {
         public Builder() {
         }
 
+        public static void reset(EditTimeAlert alert, int hours, int minutes) {
+            alert.setRecordedHours(hours);
+            alert.setRecordedMinutes(minutes);
+            alert.resetFields();
+        }
+
         public Builder with(Context context) {
             mContext = context;
             return this;
@@ -183,12 +195,6 @@ public class EditTimeAlert extends Dialog implements View.OnClickListener {
             alert.setRecordedHours(mHours);
             alert.setRecordedMinutes(mMinutes);
             return alert;
-        }
-
-        public static void reset(EditTimeAlert alert, int hours, int minutes) {
-            alert.setRecordedHours(hours);
-            alert.setRecordedMinutes(minutes);
-            alert.resetFields();
         }
     }
 }

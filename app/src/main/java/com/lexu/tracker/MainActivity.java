@@ -1,3 +1,9 @@
+/*
+ * Copyright (c)  Bogdan Andrei Alexandru Birsasteanu 2018.
+ * All rights are reserved by Bogdan Andrei Alexandru Birsasteanu.
+ * This is an open-source code, and it can be used as reference for various projects.
+ */
+
 package com.lexu.tracker;
 
 import android.content.Intent;
@@ -22,15 +28,13 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
-
     public static final int TRACKER_REQUEST_CODE_TRACK = 1001;
-    private static final int TRACKER_REQUEST_CODE_EDIT = 1002;
     public static final int TRACKER_RESULT_CODE_TRACK = 2001;
     public static final int TRACKER_RESULT_CODE_EDIT = 2002;
-
     public static final String TRACKER_DATA_KEY = "TRACKER_DATA";
     public static final String TRACKER_NEW_ENTRY_KEY = "TRACKER_NEW_ENTRY";
+    private static final String TAG = "MainActivity";
+    private static final int TRACKER_REQUEST_CODE_EDIT = 1002;
     private static final String TRACKER_UPDATE_POSITION = "TRACKER_UPDATE_POSITION";
 
     private ArrayList<TimeEntry> mData = new ArrayList<TimeEntry>();
@@ -44,16 +48,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             mData = (ArrayList<TimeEntry>) savedInstanceState.getSerializable(TRACKER_DATA_KEY);
         }
 
         Intent inboundData = getIntent();
-        if(inboundData.hasExtra(TRACKER_DATA_KEY)) {
+        if (inboundData.hasExtra(TRACKER_DATA_KEY)) {
             mData = (ArrayList<TimeEntry>) inboundData.getSerializableExtra(TRACKER_DATA_KEY);
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
         toolbar.setOnNavigationListener(new OnNavigationListener() {
             @Override
@@ -62,19 +66,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TextView currentDate = (TextView) findViewById(R.id.main_date);
+        TextView currentDate = findViewById(R.id.main_date);
         currentDate.setText(
                 new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
                         .format(Calendar.getInstance().getTime())
         );
 
-        noRecordsMessage = (TextView) findViewById(R.id.main_no_records_message);
+        noRecordsMessage = findViewById(R.id.main_no_records_message);
 
-        timeEntryList = (ListView) findViewById(R.id.main_entry_list);
+        timeEntryList = findViewById(R.id.main_entry_list);
         mListAdapter = new TimeEntryListAdapter(this, R.layout.layout_time_entry, mData);
         timeEntryList.setAdapter(mListAdapter);
 
-        if(mData.size() == 0) {
+        if (mData.size() == 0) {
             noRecordsMessage.setVisibility(View.VISIBLE);
             timeEntryList.setVisibility(View.GONE);
         } else {
@@ -92,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.main_add_entry);
+        FloatingActionButton fab = findViewById(R.id.main_add_entry);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,10 +108,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == TRACKER_REQUEST_CODE_TRACK && resultCode == TRACKER_RESULT_CODE_TRACK) {
+        if (requestCode == TRACKER_REQUEST_CODE_TRACK && resultCode == TRACKER_RESULT_CODE_TRACK) {
             TimeEntry newEntry = (TimeEntry) data.getSerializableExtra(TRACKER_NEW_ENTRY_KEY);
-            if(newEntry != null) {
-                if(mData.size() == 0) {
+            if (newEntry != null) {
+                if (mData.size() == 0) {
                     this.noRecordsMessage.setVisibility(View.GONE);
                     this.timeEntryList.setVisibility(View.VISIBLE);
                 }
@@ -116,11 +120,11 @@ public class MainActivity extends AppCompatActivity {
                 mListAdapter.notifyDataSetChanged(mData);
                 return;
             }
-        } else if(requestCode == TRACKER_REQUEST_CODE_EDIT && resultCode == TRACKER_RESULT_CODE_EDIT) {
+        } else if (requestCode == TRACKER_REQUEST_CODE_EDIT && resultCode == TRACKER_RESULT_CODE_EDIT) {
             TimeEntry entry = (TimeEntry) data.getSerializableExtra(TRACKER_NEW_ENTRY_KEY);
-            if(entry != null) {
+            if (entry != null) {
                 int pos = data.getIntExtra(TRACKER_UPDATE_POSITION, -1);
-                if(pos < 0) {
+                if (pos < 0) {
                     Log.e(TAG, "onActivityResult: error retrieving position: " + pos);
                     return;
                 }
@@ -130,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
-        
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 

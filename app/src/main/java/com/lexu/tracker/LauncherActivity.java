@@ -1,3 +1,9 @@
+/*
+ * Copyright (c)  Bogdan Andrei Alexandru Birsasteanu 2018.
+ * All rights are reserved by Bogdan Andrei Alexandru Birsasteanu.
+ * This is an open-source code, and it can be used as reference for various projects.
+ */
+
 package com.lexu.tracker;
 
 import android.content.Intent;
@@ -36,7 +42,7 @@ public class LauncherActivity extends AppCompatActivity implements OnDatabaseCal
                 .build()
                 .execute();
 
-        this.loadingMessage = (TextView) findViewById(R.id.launcher_loading_text);
+        this.loadingMessage = findViewById(R.id.launcher_loading_text);
         this.loadingMessage.setVisibility(View.VISIBLE);
 
         final String message = getResources().getString(R.string.loading_phase_0_text);
@@ -46,7 +52,7 @@ public class LauncherActivity extends AppCompatActivity implements OnDatabaseCal
             @Override
             public void run() {
                 Log.d(TAG, "run: " + isLoading + ' ' + runDuration);
-                if(!isLoading && runDuration >= 5) {
+                if (!isLoading && runDuration >= 5) {
                     loadingMessage.setText(getResources().getString(R.string.loaded_text));
                     proceed();
                 } else {

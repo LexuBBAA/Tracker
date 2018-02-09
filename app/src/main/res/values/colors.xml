@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c)  Bogdan Andrei Alexandru Birsasteanu 2018.
+  ~ All rights are reserved by Bogdan Andrei Alexandru Birsasteanu.
+  ~ This is an open-source code, and it can be used as reference for various projects.
+  -->
+
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
 </resources>

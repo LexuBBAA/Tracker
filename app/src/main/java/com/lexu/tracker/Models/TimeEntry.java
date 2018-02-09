@@ -1,3 +1,9 @@
+/*
+ * Copyright (c)  Bogdan Andrei Alexandru Birsasteanu 2018.
+ * All rights are reserved by Bogdan Andrei Alexandru Birsasteanu.
+ * This is an open-source code, and it can be used as reference for various projects.
+ */
+
 package com.lexu.tracker.Models;
 
 import android.support.annotation.Nullable;
@@ -48,7 +54,7 @@ public class TimeEntry implements Serializable {
     }
 
     public String getTitle() {
-        if(mTitle == null) {
+        if (mTitle == null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
             return dateFormat.format(mDate.getTime());
         }
@@ -94,7 +100,7 @@ public class TimeEntry implements Serializable {
     }
 
     public void addMinutes(int minutes) {
-        if(minutes < 0 && mSpentMinutes + minutes < 0) {
+        if (minutes < 0 && mSpentMinutes + minutes < 0) {
             int totalMinutes = mSpentHours * 60 + mSpentMinutes;
             mSpentHours = 0;
 
@@ -104,7 +110,7 @@ public class TimeEntry implements Serializable {
             mSpentMinutes = totalMinutes % 60;
         } else {
             mSpentMinutes += minutes;
-            if(mSpentMinutes >= 60) {
+            if (mSpentMinutes >= 60) {
                 mSpentHours += mSpentMinutes / 60;
                 mSpentMinutes = mSpentMinutes % 60;
             }

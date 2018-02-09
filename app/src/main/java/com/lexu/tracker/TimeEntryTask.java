@@ -1,3 +1,9 @@
+/*
+ * Copyright (c)  Bogdan Andrei Alexandru Birsasteanu 2018.
+ * All rights are reserved by Bogdan Andrei Alexandru Birsasteanu.
+ * This is an open-source code, and it can be used as reference for various projects.
+ */
+
 package com.lexu.tracker;
 
 import android.util.Log;
@@ -37,17 +43,17 @@ public class TimeEntryTask extends TimerTask {
     @Override
     public void run() {
         Log.d(TAG, "run: " + minutes + "m , " + seconds + 's');
-        if(!this.isAlive) {
+        if (!this.isAlive) {
             this.isAlive = true;
         }
 
-        if(this.isPaused) {
+        if (this.isPaused) {
             return;
         }
 
         this.seconds++;
 
-        if(this.seconds >= 60) {
+        if (this.seconds >= 60) {
             this.minutes++;
             this.seconds -= 60;
         }
@@ -59,13 +65,13 @@ public class TimeEntryTask extends TimerTask {
     public boolean cancel() {
         int hours = 0;
         int resultedMinutes = 0;
-        if(this.minutes >= 60) {
+        if (this.minutes >= 60) {
             hours = this.minutes / 60;
         }
 
         resultedMinutes = this.minutes % 60;
 
-        if(seconds != 0) {
+        if (seconds != 0) {
             resultedMinutes++;
         }
 
@@ -84,7 +90,7 @@ public class TimeEntryTask extends TimerTask {
         mPauseBreaks.add(new PauseRange(Calendar.getInstance().getTime()));
     }
 
-    public void resume()  {
+    public void resume() {
         this.isPaused = false;
         mPauseBreaks.get(mPauseBreaks.size() - 1).setStopTime(Calendar.getInstance().getTime());
     }

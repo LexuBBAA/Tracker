@@ -1,3 +1,29 @@
+/*
+ * Copyright (c)  Bogdan Andrei Alexandru Birsasteanu 2018.
+ * All rights are reserved by Bogdan Andrei Alexandru Birsasteanu.
+ * This is an open-source code, and it can be used as reference for various projects.
+ */
+
+/*
+ * Copyright (c)  Bogdan Andrei Alexandru Birsasteanu 2018.
+ * All rights are reserved by Bogdan Andrei Alexandru Birsasteanu.
+ * This is an open-source code, and it can be used as reference for various projects.
+ */
+
+/*
+ * Copyright (c)  Bogdan Andrei Alexandru Birsasteanu 2018.
+ * All rights are reserved by Bogdan Andrei Alexandru Birsasteanu.
+ * This is an open-source code, and it can be used as reference for various projects.
+ */
+
+/*
+ * Copyright (c) 2018. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
+
 package com.lexu.materialexu;
 
 import android.content.Context;
@@ -30,10 +56,10 @@ public class Toolbar extends android.support.v7.widget.Toolbar implements View.O
     }
 
     private void createView() {
-        View root = (View) LayoutInflater.from(getContext()).inflate(R.layout.layout_toolbar, null);
+        View root = LayoutInflater.from(getContext()).inflate(R.layout.layout_toolbar, null);
 
-        mTitle = (TextView) root.findViewById(R.id.toolbar_title);
-        mNavigationButton = (Button) root.findViewById(R.id.toolbar_navigation);
+        mTitle = root.findViewById(R.id.toolbar_title);
+        mNavigationButton = root.findViewById(R.id.toolbar_navigation);
         mNavigationButton.setOnClickListener(this);
     }
 

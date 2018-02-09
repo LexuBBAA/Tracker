@@ -1,3 +1,9 @@
+/*
+ * Copyright (c)  Bogdan Andrei Alexandru Birsasteanu 2018.
+ * All rights are reserved by Bogdan Andrei Alexandru Birsasteanu.
+ * This is an open-source code, and it can be used as reference for various projects.
+ */
+
 package com.lexu.tracker.Managers;
 
 import android.annotation.SuppressLint;
@@ -20,12 +26,10 @@ public class DatabaseProvider extends AsyncTask<Void, Void, Void> {
 
     private static final String DATABASE_NAME = "TRACKER_DB";
     private static final String TIMES_TABLE_NAME = "TRACKER_TIMES";
-
+    SQLiteDatabase mDB;
     @SuppressLint("StaticFieldLeak")
     private Context mContext;
     private OnDatabaseCallback<TimeEntry> mCallback;
-    SQLiteDatabase mDB;
-
     private int queryType = 0;
 
     private ArrayList<TimeEntry> data = new ArrayList<TimeEntry>();
@@ -77,7 +81,7 @@ public class DatabaseProvider extends AsyncTask<Void, Void, Void> {
 
         this.data = new ArrayList<TimeEntry>();
 
-        if(!cursor.moveToFirst()) {
+        if (!cursor.moveToFirst()) {
             return null;
         }
 
@@ -91,12 +95,12 @@ public class DatabaseProvider extends AsyncTask<Void, Void, Void> {
 
             Date parsedDate = null;
             try {
-                 parsedDate = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).parse(rDateString);
+                parsedDate = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).parse(rDateString);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-            if(parsedDate != null) {
+            if (parsedDate != null) {
                 Calendar rDate = Calendar.getInstance();
                 rDate.setTime(parsedDate);
 
@@ -125,7 +129,7 @@ public class DatabaseProvider extends AsyncTask<Void, Void, Void> {
         contentValues.put(DatabaseQueryBuilder.MINUTES_COLUMN_NAME, record.getSpentMinutes());
         contentValues.put(DatabaseQueryBuilder.CREATED_DATE_COLUMN_NAME,
                 new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss", Locale.getDefault())
-                .format(Calendar.getInstance().getTime())
+                        .format(Calendar.getInstance().getTime())
         );
 
         return mDB.insert(DatabaseProvider.TIMES_TABLE_NAME, null, contentValues);
@@ -157,17 +161,16 @@ public class DatabaseProvider extends AsyncTask<Void, Void, Void> {
     }
 
     public static class Builder {
+        private static Builder INSTANCE = new Builder();
         private Context mContext;
         private DatabaseProvider mDatabaseProvider;
         private OnDatabaseCallback<TimeEntry> mOnDatabaseCallback;
 
-        private static Builder INSTANCE = new Builder();
+        private Builder() {
+        }
 
         public static Builder getInstance() {
             return INSTANCE;
-        }
-
-        private Builder() {
         }
 
         public Builder with(Context context) {
@@ -181,7 +184,7 @@ public class DatabaseProvider extends AsyncTask<Void, Void, Void> {
         }
 
         public DatabaseProvider build() {
-            if(mDatabaseProvider == null) {
+            if (mDatabaseProvider == null) {
                 mDatabaseProvider = new DatabaseProvider(mContext, mOnDatabaseCallback);
                 return mDatabaseProvider;
             }

@@ -1,3 +1,9 @@
+/*
+ * Copyright (c)  Bogdan Andrei Alexandru Birsasteanu 2018.
+ * All rights are reserved by Bogdan Andrei Alexandru Birsasteanu.
+ * This is an open-source code, and it can be used as reference for various projects.
+ */
+
 package com.lexu.tracker;
 
 import android.content.Intent;
@@ -42,7 +48,7 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_time);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
         toolbar.setOnNavigationListener(new OnNavigationListener() {
             @Override
@@ -51,17 +57,17 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        mStartButton = (ImageView) findViewById(R.id.track_play);
-        mStopButton = (ImageView) findViewById(R.id.track_stop);
+        mStartButton = findViewById(R.id.track_play);
+        mStopButton = findViewById(R.id.track_stop);
 
-        mTitle = (TextView) findViewById(R.id.track_title);
-        mMinutes = (TextView) findViewById(R.id.track_minutes);
-        mSeconds = (TextView) findViewById(R.id.track_seconds);
+        mTitle = findViewById(R.id.track_title);
+        mMinutes = findViewById(R.id.track_minutes);
+        mSeconds = findViewById(R.id.track_seconds);
 
-        mSaveSection = (LinearLayout) findViewById(R.id.track_save_section);
-        mTaskTitle = (EditText) mSaveSection.findViewById(R.id.track_task_title);
-        mTaskDescription = (EditText) mSaveSection.findViewById(R.id.track_task_description);
-        mSaveButton = (Button) mSaveSection.findViewById(R.id.track_task_save);
+        mSaveSection = findViewById(R.id.track_save_section);
+        mTaskTitle = mSaveSection.findViewById(R.id.track_task_title);
+        mTaskDescription = mSaveSection.findViewById(R.id.track_task_description);
+        mSaveButton = mSaveSection.findViewById(R.id.track_task_save);
 
         mTitle.setText("Track new time");
         mMinutes.setText(String.format(mMinutes.getText().toString(), "00"));
@@ -74,22 +80,22 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 mSaveButton.setEnabled(false);
-                if(mTimeEntry == null) {
+                if (mTimeEntry == null) {
                     mSaveButton.setEnabled(true);
                     return;
                 }
 
-                if(mTaskTitle.getText().toString().length() != 0) {
+                if (mTaskTitle.getText().toString().length() != 0) {
                     mTimeEntry.setTitle(mTaskTitle.getText().toString());
                 }
 
-                if(mTaskDescription.getText().toString().length() != 0) {
+                if (mTaskDescription.getText().toString().length() != 0) {
                     mTimeEntry.setDescription(mTaskDescription.getText().toString());
                 }
 
                 long id = DatabaseProvider.Builder.getInstance().insert(mTimeEntry);
 
-                if(id < 0) {
+                if (id < 0) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -112,13 +118,13 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == mStartButton.getId()) {
-            if(!mTask.isAlive()) {
+        if (v.getId() == mStartButton.getId()) {
+            if (!mTask.isAlive()) {
                 mTitle.setText("Tracking time");
                 mStartButton.setImageResource(R.drawable.ic_pause_black_24dp);
                 mTimer.scheduleAtFixedRate(mTask, 0, 1000);
             } else {
-                if(mTask.isPaused()) {
+                if (mTask.isPaused()) {
                     mTitle.setText("Tracking time");
                     mStartButton.setImageResource(R.drawable.ic_pause_black_24dp);
                     mTask.resume();
@@ -131,7 +137,7 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        if(v.getId() == mStopButton.getId()) {
+        if (v.getId() == mStopButton.getId()) {
             mTask.cancel();
 
             mTitle.setText("Tracking stopped");
@@ -150,11 +156,11 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(minutes > 0) {
-                    mMinutes.setText(minutes >= 10 ? String.valueOf(minutes): "0".concat(String.valueOf(minutes)));
+                if (minutes > 0) {
+                    mMinutes.setText(minutes >= 10 ? String.valueOf(minutes) : "0".concat(String.valueOf(minutes)));
                 }
 
-                mSeconds.setText(seconds >= 10 ? String.valueOf(seconds): "0".concat(String.valueOf(seconds)));
+                mSeconds.setText(seconds >= 10 ? String.valueOf(seconds) : "0".concat(String.valueOf(seconds)));
             }
         });
     }

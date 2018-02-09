@@ -1,3 +1,9 @@
+/*
+ * Copyright (c)  Bogdan Andrei Alexandru Birsasteanu 2018.
+ * All rights are reserved by Bogdan Andrei Alexandru Birsasteanu.
+ * This is an open-source code, and it can be used as reference for various projects.
+ */
+
 package com.lexu.tracker;
 
 import android.content.Intent;
@@ -30,7 +36,7 @@ public class EditTimeActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_time);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
         toolbar.setOnNavigationListener(new OnNavigationListener() {
             @Override
@@ -41,24 +47,24 @@ public class EditTimeActivity extends AppCompatActivity implements View.OnClickL
 
         mRecord = (TimeEntry) getIntent().getSerializableExtra(MainActivity.TRACKER_NEW_ENTRY_KEY);
 
-        final EditText recordTitle = (EditText) findViewById(R.id.edit_time_task_title);
-        final EditText recordDescription = (EditText) findViewById(R.id.edit_time_task_description);
-        this.recordSpentTime = (TextView) findViewById(R.id.edit_time_recorded_time);
-        TextView recordDate = (TextView) findViewById(R.id.edit_time_task_date);
+        final EditText recordTitle = findViewById(R.id.edit_time_task_title);
+        final EditText recordDescription = findViewById(R.id.edit_time_task_description);
+        this.recordSpentTime = findViewById(R.id.edit_time_recorded_time);
+        TextView recordDate = findViewById(R.id.edit_time_task_date);
 
-        final Button saveButton = (Button) findViewById(R.id.edit_time_save);
+        final Button saveButton = findViewById(R.id.edit_time_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveButton.setEnabled(false);
 
-                if(v.getId() == saveButton.getId()) {
+                if (v.getId() == saveButton.getId()) {
                     mRecord.setTitle(recordTitle.getText().toString());
                     mRecord.setDescription(recordDescription.getText().toString());
 
                     boolean updated = DatabaseProvider.Builder.getInstance().update(mRecord.getID(), mRecord);
 
-                    if(updated) {
+                    if (updated) {
                         Intent result = getIntent();
                         result.putExtra(MainActivity.TRACKER_NEW_ENTRY_KEY, mRecord);
                         setResult(MainActivity.TRACKER_RESULT_CODE_EDIT, result);
@@ -73,7 +79,7 @@ public class EditTimeActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        if(mRecord != null) {
+        if (mRecord != null) {
             recordTitle.setText(mRecord.getTitle());
             recordDescription.setText(mRecord.getDescription());
             recordDate.setText(mRecord.getDate());
@@ -85,7 +91,7 @@ public class EditTimeActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if(this.editTimeAlert == null) {
+        if (this.editTimeAlert == null) {
             this.editTimeAlert = new EditTimeAlert.Builder()
                     .with(EditTimeActivity.this)
                     .setHours(mRecord.getSpentHours())
@@ -107,15 +113,15 @@ public class EditTimeActivity extends AppCompatActivity implements View.OnClickL
     public void onSave(final int hours, final int minutes, final boolean mode) {
         int hoursVal = hours;
         int minutesVal = minutes;
-        if(minutes >= 60 || minutes > mRecord.getSpentMinutes()) {
+        if (minutes >= 60 || minutes > mRecord.getSpentMinutes()) {
             hoursVal += minutes / 60;
             minutesVal = minutes % 60;
         }
 
-        mRecord.addHours(mode ? hoursVal: 0-hoursVal);
-        mRecord.addMinutes(mode ? minutesVal: 0-minutesVal);
+        mRecord.addHours(mode ? hoursVal : 0 - hoursVal);
+        mRecord.addMinutes(mode ? minutesVal : 0 - minutesVal);
 
-        this.recordSpentTime.setText(String.format(Locale.getDefault(),"%dh %dm", mRecord.getSpentHours(), mRecord.getSpentMinutes()));
+        this.recordSpentTime.setText(String.format(Locale.getDefault(), "%dh %dm", mRecord.getSpentHours(), mRecord.getSpentMinutes()));
 
         EditTimeAlert.Builder.reset(this.editTimeAlert, mRecord.getSpentHours(), mRecord.getSpentMinutes());
         this.editTimeAlert.hide();

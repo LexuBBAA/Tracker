@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c)  Bogdan Andrei Alexandru Birsasteanu 2018.
+  ~ All rights are reserved by Bogdan Andrei Alexandru Birsasteanu.
+  ~ This is an open-source code, and it can be used as reference for various projects.
+  -->
+
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -39,10 +45,10 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="Add hours"
-            android:textColorHint="@android:color/darker_gray"
             android:inputType="number"
             android:singleLine="true"
             android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
             android:textSize="14sp"/>
 
         <EditText
@@ -52,10 +58,10 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="Add minutes"
-            android:textColorHint="@android:color/darker_gray"
             android:inputType="number"
             android:singleLine="true"
             android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
             android:textSize="14sp"/>
     </LinearLayout>
 
